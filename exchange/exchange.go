@@ -77,7 +77,6 @@ func (d *DataFeedSubscription) Subscribe(pair, timeframe string, consumer DataFe
 }
 
 func (d *DataFeedSubscription) Preload(pair, timeframe string, candles []model.Candle) {
-	log.Infof("[SETUP] preloading %d candles for %s-%s", len(candles), pair, timeframe)
 	key := d.feedKey(pair, timeframe)
 	for _, candle := range candles {
 		if !candle.Complete {
