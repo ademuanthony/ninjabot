@@ -507,7 +507,7 @@ func (b *BinanceFuture) CandlesByLimit(ctx context.Context, pair, period string,
 		Do(ctx)
 
 	if err != nil {
-		return nil, err
+		return nil, fmt.Errorf("NewKlinesService", err)
 	}
 
 	for _, d := range data {
