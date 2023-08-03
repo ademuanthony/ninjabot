@@ -618,6 +618,11 @@ func (p *PaperWallet) CreateOrderStop(pair string, size float64, limit float64) 
 	return order, nil
 }
 
+func (p *PaperWallet) CreateOrderExit(orderType model.OrderType, side model.SideType, pair string,
+	quantity float64, limit float64) (model.Order, error) {
+	panic("not implemented")
+}
+
 func (p *PaperWallet) createOrderMarket(side model.SideType, pair string, size float64) (model.Order, error) {
 	if size == 0 {
 		return model.Order{}, ErrInvalidQuantity

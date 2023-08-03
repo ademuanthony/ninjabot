@@ -31,6 +31,7 @@ type Broker interface {
 	CreateOrderMarket(side model.SideType, pair string, size float64) (model.Order, error)
 	CreateOrderMarketQuote(side model.SideType, pair string, quote float64) (model.Order, error)
 	CreateOrderStop(pair string, quantity float64, limit float64) (model.Order, error)
+	CreateOrderExit(orderType model.OrderType, side model.SideType, pair string, quantity float64, limit float64) (model.Order, error)
 	Cancel(model.Order) error
 }
 

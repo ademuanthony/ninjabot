@@ -206,6 +206,40 @@ func (b *BinanceFuture) CreateOrderStop(pair string, quantity float64, limit flo
 	}, nil
 }
 
+func (b *BinanceFuture) CreateOrderExit(orderType model.OrderType, side model.SideType, pair string,
+	 quantity float64, limit float64) (model.Order, error) {
+	err := b.validate(pair, quantity)
+	if err != nil {
+		return model.Order{}, err
+	}
+
+	order, err := b.client.NewCreateOrderService().Symbol(pair).
+		Type(futures.OrderType(orderType)).
+		TimeInForce(futures.TimeInForceTypeGTC).
+		Side(futures.SideType(side)).
+		Quantity(b.formatQuantity(pair, quantity)).
+		Price(b.formatPrice(pair, limit)).
+		Do(b.ctx)
+	if err != nil {
+		return model.Order{}, err
+	}
+
+	price, _ := strconv.ParseFloat(order.Price, 64)
+	quantity, _ = strconv.ParseFloat(order.OrigQuantity, 64)
+
+	return model.Order{
+		ExchangeID: order.OrderID,
+		CreatedAt:  time.Unix(0, order.UpdateTime*int64(time.Millisecond)),
+		UpdatedAt:  time.Unix(0, order.UpdateTime*int64(time.Millisecond)),
+		Pair:       pair,
+		Side:       model.SideType(order.Side),
+		Type:       model.OrderType(order.Type),
+		Status:     model.OrderStatusType(order.Status),
+		Price:      price,
+		Quantity:   quantity,
+	}, nil
+}
+
 func (b *BinanceFuture) formatPrice(pair string, value float64) string {
 	if info, ok := b.assetsInfo[pair]; ok {
 		value = common.AmountToLotSize(info.TickSize, info.QuotePrecision, value)
