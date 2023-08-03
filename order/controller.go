@@ -446,7 +446,24 @@ func (c *Controller) CreateOrderLimit(side model.SideType, pair string, size, li
 }
 
 func (c *Controller) CreateOrderExit(orderType model.OrderType, side model.SideType, pair string, quantity float64, limit float64) (model.Order, error) {
-	panic("not implemented")
+	c.mtx.Lock()
+	defer c.mtx.Unlock()
+
+	log.Infof("[ORDER] Creating Exit %s order for %s", side, pair)
+	order, err := c.exchange.CreateOrderExit(orderType, side, pair, quantity, limit)
+	if err != nil {
+		c.notifyError(err)
+		return model.Order{}, err
+	}
+
+	err = c.storage.CreateOrder(&order)
+	if err != nil {
+		c.notifyError(err)
+		return model.Order{}, err
+	}
+	go c.orderFeed.Publish(order, true)
+	log.Infof("[ORDER CREATED] %s", order)
+	return order, nil
 }
 
 func (c *Controller) CreateOrderMarketQuote(side model.SideType, pair string, amount float64) (model.Order, error) {
