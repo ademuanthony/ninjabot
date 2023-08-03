@@ -449,7 +449,7 @@ func (c *Controller) CreateOrderExit(orderType model.OrderType, side model.SideT
 	c.mtx.Lock()
 	defer c.mtx.Unlock()
 
-	log.Infof("[ORDER] Creating Exit %s order for %s", side, pair)
+	log.Infof("[ORDER] Creating Exit %s order for %s with type %s", side, pair, orderType)
 	order, err := c.exchange.CreateOrderExit(orderType, side, pair, quantity, limit)
 	if err != nil {
 		c.notifyError(err)

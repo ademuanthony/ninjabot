@@ -218,7 +218,7 @@ func (b *BinanceFuture) CreateOrderExit(orderType model.OrderType, side model.Si
 		TimeInForce(futures.TimeInForceTypeGTC).
 		Side(futures.SideType(side)).
 		Quantity(b.formatQuantity(pair, quantity)).
-		Price(b.formatPrice(pair, limit)).
+		StopPrice(b.formatPrice(pair, limit)).
 		Do(b.ctx)
 	if err != nil {
 		return model.Order{}, err
