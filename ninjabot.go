@@ -332,8 +332,6 @@ func (n *NinjaBot) Run(ctx context.Context) error {
 			return err
 		}
 
-		log.Info("preloaded")
-
 		// link to ninja bot controller
 		n.dataFeed.Subscribe(pair, n.strategy.Timeframe(), n.onCandle, false)
 
