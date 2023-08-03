@@ -112,6 +112,10 @@ func NewBinance(ctx context.Context, options ...BinanceOption) (*Binance, error)
 	return exchange, nil
 }
 
+func (b *Binance) CreateOrderExit(orderType model.OrderType, side model.SideType, pair string, quantity float64, limit float64) (model.Order, error) {
+	panic("not implemented")
+}
+
 func (b *Binance) LastQuote(ctx context.Context, pair string) (float64, error) {
 	candles, err := b.CandlesByLimit(ctx, pair, "1m", 1)
 	if err != nil || len(candles) < 1 {
