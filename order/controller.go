@@ -445,6 +445,10 @@ func (c *Controller) CreateOrderLimit(side model.SideType, pair string, size, li
 	return order, nil
 }
 
+func (c *Controller) CreateOrderExit(orderType model.OrderType, side model.SideType, pair string, quantity float64, limit float64) (model.Order, error) {
+	panic("not implemented")
+}
+
 func (c *Controller) CreateOrderMarketQuote(side model.SideType, pair string, amount float64) (model.Order, error) {
 	c.mtx.Lock()
 	defer c.mtx.Unlock()
