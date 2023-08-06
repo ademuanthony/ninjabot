@@ -159,7 +159,7 @@ func (t telegram) BalanceHandle(m *tb.Message) {
 
 		assetValue := assetSize * quote
 		quotesValue[quotePair] = quoteSize
-		if assetValue <= 10 {
+		if assetValue <= 1 {
 			continue
 		}
 		total += assetValue
