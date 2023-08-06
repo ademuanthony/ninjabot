@@ -159,6 +159,9 @@ func (t telegram) BalanceHandle(m *tb.Message) {
 
 		assetValue := assetSize * quote
 		quotesValue[quotePair] = quoteSize
+		if assetValue <= 10 {
+			continue
+		}
 		total += assetValue
 		message += fmt.Sprintf("%s: `%.4f` ≅ `%.2f` %s \n", assetPair, assetSize, assetValue, quotePair)
 	}
